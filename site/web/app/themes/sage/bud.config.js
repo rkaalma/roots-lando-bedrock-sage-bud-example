@@ -33,7 +33,7 @@ export default async (app) => {
    * @see {@link https://bud.js.org/docs/bud.watch}
    */
   app
-    .setUrl('http://localhost:3000')
+    .setUrl(`${app.env.get('WP_HOME')}:3000`)
     .setProxyUrl(app.env.get('WP_HOME'))
     .watch(['resources/views', 'app']);
 
