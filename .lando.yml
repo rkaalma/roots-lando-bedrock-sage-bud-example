@@ -1,0 +1,44 @@
+name: example
+recipe: wordpress
+config:
+  php: '8.1'
+  composer_version: 2-latest
+  via: nginx
+  webroot: ./site/web
+  database: mariadb
+  xdebug: true
+proxy:
+  appserver_nginx:
+    - example.lndo.site # default
+    - example.test # for testing
+  phpmyadmin:
+    - pma.example.lndo.site # default
+    - pma.example.test # for testing
+  mailhog:
+    - mail.example.lndo.site # default
+    - mail.example.test # for testing
+services:
+  database:
+    type: mariadb
+    portforward: 3306
+  phpmyadmin:
+    type: phpmyadmin
+    hosts:
+      - database
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver_nginx
+  dev:
+    type: node:16
+    # overrides:
+    #   ports:
+    #     - 3000:3000
+tooling:
+  npm:
+    service: dev
+  yarn:
+    service: dev
+excludes:
+  - vendor
+  - node_modules
